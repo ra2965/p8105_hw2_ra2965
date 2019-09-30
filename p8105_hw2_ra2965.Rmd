@@ -3,16 +3,17 @@ title: "p8105_hw2_ra2965"
 output: github_document
 ---
 
-```{r}
-install.packages("tidyr")
-```
+Read and clean the Mr. Trash Wheel sheet:
 
+specify the sheet in the Excel file and to omit non-data entries (rows with notes / figures; columns containing notes) using arguments in read_excel
+use reasonable variable names
+omit rows that do not include dumpster-specific data
+round the number of sports balls to the nearest integer and converts the result to an integer variable (using as.integer)
 
-
-```{r}
+```{r Problem 1 trash wheel sheet}
 library(tidyverse)
 
-hw2_data = readxl::read_excel ("/Users/anran/Desktop/DataScience/week4/hw2/data/HealthyHarborWaterWheelTotals2018-7-28.xlsx", sheet = "Mr. Trash Wheel") %>%
+trash_wheel = readxl::read_excel ("/Users/anran/Desktop/DataScience/week4/hw2/data/HealthyHarborWaterWheelTotals2018-7-28.xlsx", sheet = "Mr. Trash Wheel") %>%
   
 janitor::clean_names()%>%
 
@@ -23,11 +24,18 @@ drop_na(dumpster)%>%
 mutate (
 sports_balls = as.integer(sports_balls))
 ```
+Read and clean precipitation data for 2017 and 2018. For each, omit rows without precipitation data and add a variable year. Next, combine precipitation datasets and convert month to a character variable (the variable month.name is built into R and should be useful).
 
+Write a paragraph about these data; you are encouraged to use inline R. Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2018? What was the median number of sports balls in a dumpster in 2017?
 
+```{r problem 1 precipitation sheet}
+precipitation_2018 = readxl::read_excel ("/Users/anran/Desktop/DataScience/week4/hw2/data/HealthyHarborWaterWheelTotals2018-7-28.xlsx",sheet = "2018 Precipitation")%>%
+janitor::clean_names()%>%
+  drop_na(.)
 
-```{r}
-
+precipitation_2017 = readxl::read_excel ("/Users/anran/Desktop/DataScience/week4/hw2/data/HealthyHarborWaterWheelTotals2018-7-28.xlsx",sheet = "2017 Precipitation")%>%
+janitor::clean_names()%>%
+  drop_na(.)
 ```
 
 
