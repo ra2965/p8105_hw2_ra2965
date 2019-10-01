@@ -40,7 +40,9 @@ There are `r nrow(trash_wheel)` observations in the Mr. Trash Wheel dataset and 
 
 ```{r Problem2 pols-month}
 pols_month = read_csv(file = "../data/fivethirtyeight_datasets/pols-month.csv") %>%
-janitor::clean_names()
+janitor::clean_names() %>%
+separate("mon", into = c("year","month","day"), sep = "-") %>%
+  mutate(month = month.name[as.numeric(month)])
 
 
 ```
