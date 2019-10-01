@@ -61,14 +61,16 @@ pols_month = read_csv(file = "../data/fivethirtyeight_datasets/pols-month.csv") 
 janitor::clean_names() %>%
 separate("mon", into = c("year","month","day"), sep = "-") %>%
 mutate(month = month.name[as.numeric(month)]) %>%
-  mutate(president = ifelse(prez_gop == 1, "gop", "dem")) %>%
+  mutate(president = ifelse(prez_gop > 0, "gop","dem")) %>%
   select(-prez_gop, -prez_dem, -day)
+
 ```
 
 ```{r Problem2 snp}
 snp = read_csv(file = "../data/fivethirtyeight_datasets/snp.csv") %>%
 separate("date", into = c("day","month","year"), sep = "/") %>%
-mutate(month = month.name[as.numeric(month)]) 
+  arrange(year, month)%>%
+  mutate(month = month.name[as.numeric(month)])
 
 ```
 
