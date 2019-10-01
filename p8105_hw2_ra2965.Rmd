@@ -5,29 +5,29 @@ output: github_document
 
 Read and clean the Mr. Trash Wheel sheet:
 
-```{r Problem 1 trash wheel sheet}
+```{r Problem1 trash wheel sheet}
 library(tidyverse)
 
 trash_wheel = readxl::read_excel ("/Users/anran/Desktop/DataScience/week4/hw2/data/HealthyHarborWaterWheelTotals2018-7-28.xlsx", sheet = "Mr. Trash Wheel") %>%
   
-janitor::clean_names()%>%
+janitor::clean_names() %>%
 
-select(-x15)%>%
+select(-x15) %>%
   
-drop_na(dumpster)%>%
+drop_na(dumpster) %>%
 
 mutate(sports_balls = as.integer(sports_balls))
 ```
 Read and clean precipitation data for 2017 and 2018:
 
-```{r problem 1 precipitation sheet}
-precipitation_2018 = readxl::read_excel ("/Users/anran/Desktop/DataScience/week4/hw2/data/HealthyHarborWaterWheelTotals2018-7-28.xlsx",sheet = "2018 Precipitation", skip = 1) %>%
+```{r Problem1 precipitation sheet}
+precipitation_2018 = readxl::read_excel("/Users/anran/Desktop/DataScience/week4/hw2/data/HealthyHarborWaterWheelTotals2018-7-28.xlsx",sheet = "2018 Precipitation", skip = 1) %>%
 janitor::clean_names() %>%
 drop_na(.) %>%
 mutate(year = 2018)
 
 
-precipitation_2017 = readxl::read_excel ("/Users/anran/Desktop/DataScience/week4/hw2/data/HealthyHarborWaterWheelTotals2018-7-28.xlsx",sheet ="2017 Precipitation", skip = 1) %>%
+precipitation_2017 = readxl::read_excel("/Users/anran/Desktop/DataScience/week4/hw2/data/HealthyHarborWaterWheelTotals2018-7-28.xlsx",sheet = "2017 Precipitation",skip = 1) %>%
 janitor::clean_names() %>%
 drop_na(.) %>%
 mutate(year = 2017)
@@ -36,7 +36,12 @@ precipitation = union_all(precipitation_2017, precipitation_2018) %>%
 mutate(month = month.name[month])
 
 ```
-Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2018? What was the median number of sports balls in a dumpster in 2017?
-
 There are `r nrow(trash_wheel)` observations in the Mr. Trash Wheel dataset and `r nrow(precipitation)` observations in the precipitation dataset. For available data, the total precipitation in 2018 is `r sum(pull(precipitation_2018, total))`. The median number of sports balls in a dumpster in 2017 is `r median(pull(trash_wheel, sports_balls))`.
+
+```{r Problem2 pols-month}
+pols_month = read_csv(file = "../data/fivethirtyeight_datasets/pols-month.csv") %>%
+janitor::clean_names()
+
+
+```
 
