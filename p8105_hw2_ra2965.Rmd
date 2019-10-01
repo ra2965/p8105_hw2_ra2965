@@ -42,7 +42,8 @@ There are `r nrow(trash_wheel)` observations in the Mr. Trash Wheel dataset and 
 pols_month = read_csv(file = "../data/fivethirtyeight_datasets/pols-month.csv") %>%
 janitor::clean_names() %>%
 separate("mon", into = c("year","month","day"), sep = "-") %>%
-  mutate(month = month.name[as.numeric(month)])
+mutate(month = month.name[as.numeric(month)]) %>%
+  select(-prez_dem,-prez_gop)
 
 
 ```
