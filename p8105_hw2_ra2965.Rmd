@@ -75,6 +75,7 @@ unemployment = read_csv(file = "../data/fivethirtyeight_datasets/unemployment.cs
 Join the datasets：
 
 ```{r joined datasets}
+
 snp_pols = left_join(pols, snp, by = c("month","year"))
 snp_pols_emp = left_join(snp_pols, unemployment, by = c("month","year"))
 
@@ -95,12 +96,21 @@ baby_names = read_csv(file = "../data/Popular_Baby_Names.csv") %>%
 
 ```
 
-```{r}
-rank_olivia = select(baby_names, childs_first_name, year_of_birth,ethnicity, rank) %>%
-  filter(childs_first_name == "olivia")
+```{r female and male name}
+baby_names %>% filter(childs_first_name == "olivia",gender == "FEMALE") %>% select(childs_first_name, year_of_birth,ethnicity, rank) %>%
+  pivot_wider(names_from = "year_of_birth",
+              values_from = "rank") %>% knitr::kable()
 
-filter(baby_names, gender=="MALE")
-rank_ethan = select(baby_names, childs_first_name, year_of_birth,ethnicity, rank) %>%
-  filter(childs_first_name == "ethan")
+
+baby_names %>% filter(gender == "MALE", childs_first_name == "ethan") %>% select(childs_first_name, year_of_birth,ethnicity, rank) %>%
+  pivot_wider(names_from = "year_of_birth",
+              values_from = "rank") %>% knitr::kable()
+```
+
+
+```{r}
+library(ggridges)
+plot_df = filter(baby_names, ethnicity == "WHITE NON HISPANIC", gender == "MALE", year_of_birth == 2016)
+ggplot(plot_df, aes(x = rank, y = count)) + geom_point()
 ```
 
