@@ -16,7 +16,7 @@ trash_wheel = readxl::read_excel("/Users/anran/Desktop/DataScience/week4/hw2/dat
     mutate(sports_balls = as.integer(sports_balls))
 ```
 
-## Read and clean precipitation data for 2017 and 2018:
+## Read and clean precipitation data for 2017 and 2018, and then combine them:
 
 ```{r Problem1 precipitation}
 
@@ -35,7 +35,7 @@ precipitation = full_join(precipitation_2017, precipitation_2018) %>%
 mutate(month = month.name[month])
 
 ```
-There are `r nrow(trash_wheel)` observations and `r ncol(trash_wheel)` variables in the Mr. Trash Wheel dataset.
+There are `r nrow(trash_wheel)` observations and `r ncol(trash_wheel)` variables in the Mr. Trash Wheel dataset. The 
 
 There are `r nrow(precipitation)` observations in the precipitation dataset. For available data, the total precipitation in 2018 is `r sum(pull(precipitation_2018, total))`. The median number of sports balls in a dumpster in 2017 is `r median(pull(trash_wheel%>% filter(year == 2017), sports_balls))`.
 
