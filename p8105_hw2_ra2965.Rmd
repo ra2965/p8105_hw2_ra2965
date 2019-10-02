@@ -38,7 +38,7 @@ mutate(month = month.name[month])
 ```
 There are `r nrow(trash_wheel)` observations in the Mr. Trash Wheel dataset and there are `r ncol(trash_wheel)` variables.
 
-There are`r nrow(precipitation)` observations in the precipitation dataset. For available data, the total precipitation in 2018 is `r sum(pull(precipitation_2018, total))`. The median number of sports balls in a dumpster in 2017 is `r median(pull(trash_wheel, sports_balls))`.
+There are `r nrow(precipitation)` observations in the precipitation dataset. For available data, the total precipitation in 2018 is `r sum(pull(precipitation_2018, total))`. The median number of sports balls in a dumpster in 2017 is `r median(pull(trash_wheel, sports_balls))`.
 
 ```{r Problem2 pols-month}
 
@@ -81,6 +81,8 @@ snp_pols_emp = left_join(snp_pols, unemployment, by = c("month","year"))
 ```
 
 Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
+
+`r min(pull(snp_pols_emp, year))` to `r max(pull(snp_pols_emp, year))` 
 
 Note: we could have used a date variable as a key instead of creating year and month keys; doing so would help with some kinds of plotting, and be a more accurate representation of the data. Date formats are tricky, though. For more information check out the lubridate package in the tidyverse.
 
