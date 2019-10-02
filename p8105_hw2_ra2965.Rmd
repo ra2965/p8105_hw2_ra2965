@@ -86,7 +86,7 @@ Write a short paragraph about these datasets. Explain briefly what each dataset 
 
 Note: we could have used a date variable as a key instead of creating year and month keys; doing so would help with some kinds of plotting, and be a more accurate representation of the data. Date formats are tricky, though. For more information check out the lubridate package in the tidyverse.
 
-```{r}
+```{r Problem3 babynames}
 baby_names = read_csv(file = "../data/Popular_Baby_Names.csv") %>%
   janitor::clean_names() %>%
   mutate(ethnicity = recode(ethnicity, "ASIAN AND PACI" = "ASIAN AND PACIFIC ISLANDER", "BLACK NON HISP"= "BLACK NON HISPANIC","WHITE NON HISP" = "WHITE NON HISPANIC"))%>%
@@ -95,4 +95,12 @@ baby_names = read_csv(file = "../data/Popular_Baby_Names.csv") %>%
 
 ```
 
+```{r}
+rank_olivia = select(baby_names, childs_first_name, year_of_birth,ethnicity, rank) %>%
+  filter(childs_first_name == "olivia")
+
+filter(baby_names, gender=="MALE")
+rank_ethan = select(baby_names, childs_first_name, year_of_birth,ethnicity, rank) %>%
+  filter(childs_first_name == "ethan")
+```
 
