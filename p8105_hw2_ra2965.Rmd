@@ -36,28 +36,16 @@ precipitation = union_all(precipitation_2017, precipitation_2018) %>%
 mutate(month = month.name[month])
 
 ```
-There are `r nrow(trash_wheel)` observations in the Mr. Trash Wheel dataset and `r nrow(precipitation)` observations in the precipitation dataset. For available data, the total precipitation in 2018 is `r sum(pull(precipitation_2018, total))`. The median number of sports balls in a dumpster in 2017 is `r median(pull(trash_wheel, sports_balls))`.
+There are `r nrow(trash_wheel)` observations in the Mr. Trash Wheel dataset and there are `r ncol(trash_wheel)` variables.
 
-
-Second, clean the data in snp.csv using a similar process to the above. For consistency across datasets, arrange according to year and month, and organize so that year and month are the leading columns.
-
-Third, tidy the unemployment data so that it can be merged with the previous datasets. This process will involve switching from “wide” to “long” format; ensuring that key variables have the same name; and ensuring that key variables take the same values.
-
-Join the datasets by merging snp into pols, and merging unemployment into the result.
-
-Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
-
-Note: we could have used a date variable as a key instead of creating year and month keys; doing so would help with some kinds of plotting, and be a more accurate representation of the data. Date formats are tricky, though. For more information check out the lubridate package in the tidyverse.
-
-
-
+There are`r nrow(precipitation)` observations in the precipitation dataset. For available data, the total precipitation in 2018 is `r sum(pull(precipitation_2018, total))`. The median number of sports balls in a dumpster in 2017 is `r median(pull(trash_wheel, sports_balls))`.
 
 ```{r Problem2 pols-month}
 
-pols_month = read_csv(file = "../data/fivethirtyeight_datasets/pols-month.csv") %>%
+pols = read_csv(file = "../data/fivethirtyeight_datasets/pols-month.csv") %>%
 janitor::clean_names() %>%
 separate(mon, into = c("year","month","day"), sep = "-", convert = TRUE) %>%
-mutate(month = month.name[month]) %>%
+mutate(month = month.abb[month]) %>%
   mutate(president = ifelse(prez_gop > 0, "gop","dem")) %>%
   select(-prez_gop, -prez_dem, -day)
 
@@ -66,20 +54,42 @@ mutate(month = month.name[month]) %>%
 ```{r Problem2 snp}
 
 snp = read_csv(file = "../data/fivethirtyeight_datasets/snp.csv") %>%
-separate("date", into = c("day","month","year"), sep = "/") %>%
+separate("date", into = c("day","month","year"), sep = "/", convert = TRUE) %>%
   arrange(year, month)%>%
-  mutate(month = month.name[as.numeric(month)])%>%
+  mutate(month = month.abb[month])%>%
   select(year, month, everything(),-day)
 
 ```
 
 ```{r Problem2 unemployment}
+
 unemployment = read_csv(file = "../data/fivethirtyeight_datasets/unemployment.csv") %>%
-pivot_longer(Jan:Dec,
+  pivot_longer(Jan:Dec,
              names_to = "month",
              values_to = "percent_unemployment"
-) 
-
+) %>%
+  select(year = Year, everything())
 
 ```
+
+Join the datasets：
+
+```{r joined datasets}
+snp_pols = left_join(pols, snp, by = c("month","year"))
+snp_pols_emp = left_join(snp_pols, unemployment, by = c("month","year"))
+
+```
+
+Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
+
+Note: we could have used a date variable as a key instead of creating year and month keys; doing so would help with some kinds of plotting, and be a more accurate representation of the data. Date formats are tricky, though. For more information check out the lubridate package in the tidyverse.
+
+```{r}
+baby_names = read_csv(file = "../data/Popular_Baby_Names.csv") %>%
+  janitor::clean_names() %>%
+  mutate(ethnicity = recode(ethnicity, "ASIAN AND PACI" = "ASIAN AND PACIFIC ISLANDER", "BLACK NON HISP"= "BLACK NON HISPANIC","WHITE NON HISP" = "WHITE NON HISPANIC"))%>%
+  mutate(childs_first_name = str_to_lower(childs_first_name))
+
+```
+
 
