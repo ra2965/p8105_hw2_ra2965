@@ -35,9 +35,12 @@ precipitation = full_join(precipitation_2017, precipitation_2018) %>%
 mutate(month = month.name[month])
 
 ```
-There are `r nrow(trash_wheel)` observations and `r ncol(trash_wheel)` variables in the Mr. Trash Wheel dataset. The 
+There are `r nrow(trash_wheel)` observations and `r ncol(trash_wheel)` variables in the Mr. Trash Wheel dataset. The dataset includes key variables of `r colnames(trash_wheel)`, which are the dumpter number, date of collection, litter type and amount of litter for each type.
 
-There are `r nrow(precipitation)` observations in the precipitation dataset. For available data, the total precipitation in 2018 is `r sum(pull(precipitation_2018, total))`. The median number of sports balls in a dumpster in 2017 is `r median(pull(trash_wheel%>% filter(year == 2017), sports_balls))`.
+
+There are `r nrow(precipitation)` observations and `r ncol(precipitation)` in the precipitation dataset. The dataset includes key variables of `r colnames(precipitation)`, which are the precipitation data for each month in 2017 and 2018.
+
+For available data, the total precipitation in 2018 is `r sum(pull(precipitation_2018, total))`. The median number of sports balls in a dumpster in 2017 is `r median(pull(trash_wheel%>% filter(year == 2017), sports_balls))`.
 
 #Problem 2
 
@@ -84,6 +87,8 @@ snp_pols_emp = left_join(snp_pols, unemployment, by = c("month","year"))
 ```
 
 Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
+
+`r dim(snp_pols_emp)`
 
 `r min(pull(snp_pols_emp, year))` to `r max(pull(snp_pols_emp, year))` 
 
