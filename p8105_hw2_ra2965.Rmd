@@ -6,7 +6,7 @@ output: github_document
 
 ##Read and clean the Mr. Trash Wheel sheet:
 
-```{r Problem1 trash wheel}
+```{r Problem1 trash wheel, message = FALSE}
 library(tidyverse)
 
 trash_wheel = readxl::read_excel("/Users/anran/Desktop/DataScience/week4/hw2/data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", sheet = "Mr. Trash Wheel") %>%
@@ -18,7 +18,7 @@ trash_wheel = readxl::read_excel("/Users/anran/Desktop/DataScience/week4/hw2/dat
 
 ## Read and clean precipitation data for 2017 and 2018, and then combine them:
 
-```{r Problem1 precipitation}
+```{r  Problem1 precipitation, message = FALSE}
 
 precipitation_2018 = readxl::read_excel("/Users/anran/Desktop/DataScience/week4/hw2/data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",sheet = "2018 Precipitation", skip = 1) %>%
 janitor::clean_names() %>%
@@ -45,7 +45,7 @@ For available data, the total precipitation in 2018 is `r sum(pull(precipitation
 #Problem 2
 
 
-```{r Problem2 pols-month}
+```{r Problem2 pols-month, message = FALSE}
 
 pols = read_csv(file = "../data/fivethirtyeight_datasets/pols-month.csv") %>%
 janitor::clean_names() %>%
@@ -56,7 +56,7 @@ mutate(month = month.abb[month]) %>%
 
 ```
 
-```{r Problem2 snp}
+```{r Problem2 snp,message = FALSE}
 
 snp = read_csv(file = "../data/fivethirtyeight_datasets/snp.csv") %>%
 separate("date", into = c("day","month","year"), sep = "/", convert = TRUE) %>%
@@ -66,7 +66,7 @@ separate("date", into = c("day","month","year"), sep = "/", convert = TRUE) %>%
 
 ```
 
-```{r Problem2 unemployment}
+```{r Problem2 unemployment, message = FALSE}
 
 unemployment = read_csv(file = "../data/fivethirtyeight_datasets/unemployment.csv") %>%
   pivot_longer(Jan:Dec,
@@ -79,7 +79,7 @@ unemployment = read_csv(file = "../data/fivethirtyeight_datasets/unemployment.cs
 
 Join the datasets：
 
-```{r joined datasets}
+```{r joined datasets, message = FALSE}
 
 snp_pols = left_join(pols, snp, by = c("month","year"))
 snp_pols_emp = left_join(snp_pols, unemployment, by = c("month","year"))
@@ -88,13 +88,15 @@ snp_pols_emp = left_join(snp_pols, unemployment, by = c("month","year"))
 
 Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
 
+The cleaned file “pols-month” contains `r nrow(pols)` observations of `r ncol(pols)` variables related to the number of national politicians who are democratic or republican at any given time. The key variables in this dataset are `r colnames(pols)`.
+
 `r dim(snp_pols_emp)`
 
 `r min(pull(snp_pols_emp, year))` to `r max(pull(snp_pols_emp, year))` 
 
 Note: we could have used a date variable as a key instead of creating year and month keys; doing so would help with some kinds of plotting, and be a more accurate representation of the data. Date formats are tricky, though. For more information check out the lubridate package in the tidyverse.
 
-```{r Problem3 babynames}
+```{r Problem3 babynames, message = FALSE}
 baby_names = read_csv(file = "../data/Popular_Baby_Names.csv") %>%
   janitor::clean_names() %>%
   mutate(ethnicity = recode(ethnicity, "ASIAN AND PACI" = "ASIAN AND PACIFIC ISLANDER", "BLACK NON HISP"= "BLACK NON HISPANIC","WHITE NON HISP" = "WHITE NON HISPANIC"))%>%
@@ -103,7 +105,7 @@ baby_names = read_csv(file = "../data/Popular_Baby_Names.csv") %>%
 
 ```
 
-```{r female and male name}
+```{r female and male name, message = FALSE}
 baby_names %>% filter(childs_first_name == "olivia",gender == "FEMALE") %>% select(childs_first_name, year_of_birth,ethnicity, rank) %>%
   pivot_wider(names_from = "year_of_birth",
               values_from = "rank") %>% knitr::kable()
@@ -114,7 +116,7 @@ baby_names %>% filter(gender == "MALE",rank == 1) %>% select(childs_first_name, 
 ```
 
 
-```{r}
+```{r scatterplot, message = FALSE}
 library(ggridges)
 plot_df = filter(baby_names, ethnicity == "WHITE NON HISPANIC", gender == "MALE", year_of_birth == 2016)
 ggplot(plot_df, aes(x = rank, y = count)) + geom_point() +
