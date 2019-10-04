@@ -31,7 +31,7 @@ janitor::clean_names() %>%
 drop_na(.) %>%
 mutate(year = 2017)
 
-precipitation = full_join(precipitation_2017, precipitation_2018) %>%
+precipitation = rbind(precipitation_2017, precipitation_2018) %>%
 mutate(month = month.name[month])
 
 ```
