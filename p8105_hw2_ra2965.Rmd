@@ -9,9 +9,8 @@ output: github_document
 ```{r Problem1 trash wheel, message = FALSE}
 library(tidyverse)
 
-trash_wheel = readxl::read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", sheet = "Mr. Trash Wheel") %>%
+trash_wheel = readxl::read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", sheet = "Mr. Trash Wheel", range = "A2:N406") %>%
   janitor::clean_names() %>%
-    select(-x15, -x16,-x17) %>%
     drop_na(dumpster) %>%
     mutate(sports_balls = round(sports_balls,0)) %>%
   mutate(sports_balls = as.integer(sports_balls))
@@ -136,8 +135,8 @@ percent_unemployment: the percentage of unemployment of the associated date.
 ```{r Problem3 babynames, message = FALSE}
 baby_names = read_csv(file = "./data/Popular_Baby_Names.csv") %>%
   janitor::clean_names() %>%
-  mutate(ethnicity = recode(ethnicity, "ASIAN AND PACI" = "ASIAN AND PACIFIC ISLANDER", "BLACK NON HISP"= "BLACK NON HISPANIC","WHITE NON HISP" = "WHITE NON HISPANIC"))%>%
-  mutate(childs_first_name = str_to_lower(childs_first_name)) %>%
+  mutate(ethnicity = recode(ethnicity, "ASIAN AND PACI" = "ASIAN AND PACIFIC ISLANDER", "BLACK NON HISP"= "BLACK NON HISPANIC","WHITE NON HISP" = "WHITE NON HISPANIC")) %>%
+  mutate(childs_first_name = str_to_title(childs_first_name)) %>%
   distinct()
 
 ```
@@ -145,7 +144,7 @@ baby_names = read_csv(file = "./data/Popular_Baby_Names.csv") %>%
 ##Produce two reader-friendly tables:
 
 ```{r female and male name, message = FALSE}
-baby_names %>% filter(childs_first_name == "olivia",gender == "FEMALE") %>% select(childs_first_name, year_of_birth,ethnicity, rank) %>%
+baby_names %>% filter(childs_first_name == "Olivia",gender == "FEMALE") %>% select(childs_first_name, year_of_birth,ethnicity, rank) %>%
   pivot_wider(names_from = "year_of_birth",
               values_from = "rank") %>% knitr::kable()
 
