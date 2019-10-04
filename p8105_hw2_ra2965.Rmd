@@ -9,24 +9,25 @@ output: github_document
 ```{r Problem1 trash wheel, message = FALSE}
 library(tidyverse)
 
-trash_wheel = readxl::read_excel("/Users/anran/Desktop/DataScience/week4/hw2/data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", sheet = "Mr. Trash Wheel") %>%
+trash_wheel = readxl::read_excel("../data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", sheet = "Mr. Trash Wheel") %>%
   janitor::clean_names() %>%
     select(-x15, -x16,-x17) %>%
     drop_na(dumpster) %>%
-    mutate(sports_balls = as.integer(sports_balls))
+    mutate(sports_balls = round(sports_balls)) %>%
+  mutate(sports_balls = as.integer(sports_balls))
 ```
 
 ## Read and clean precipitation data for 2017 and 2018, and then combine them:
 
 ```{r  Problem1 precipitation, message = FALSE}
 
-precipitation_2018 = readxl::read_excel("/Users/anran/Desktop/DataScience/week4/hw2/data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",sheet = "2018 Precipitation", skip = 1) %>%
+precipitation_2018 = readxl::read_excel("../data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",sheet = "2018 Precipitation", skip = 1) %>%
 janitor::clean_names() %>%
 drop_na(.) %>%
 mutate(year = 2018)
 
 
-precipitation_2017 = readxl::read_excel("/Users/anran/Desktop/DataScience/week4/hw2/data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",sheet = "2017 Precipitation",skip = 1) %>%
+precipitation_2017 = readxl::read_excel("../data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",sheet = "2017 Precipitation",skip = 1) %>%
 janitor::clean_names() %>%
 drop_na(.) %>%
 mutate(year = 2017)
