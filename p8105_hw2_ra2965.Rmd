@@ -56,16 +56,20 @@ mutate(month = month.abb[month]) %>%
   select(-prez_gop, -prez_dem, -day)
 
 ```
+
 ##Read and clean the data file snp:
+
 ```{r Problem2 snp,message = FALSE}
 
 snp = read_csv(file = "./data/fivethirtyeight_datasets/snp.csv") %>%
-separate("date", into = c("day","month","year"), sep = "/", convert = TRUE) %>%
+separate("date", into = c("month","day","year"), sep = "/", convert = TRUE) %>%
   arrange(year, month)%>%
   mutate(month = month.abb[month])%>%
   select(year, month, everything(),-day)
 
 ```
+
+
 ##Read and clean the data file unemployment:
 ```{r Problem2 unemployment, message = FALSE}
 
@@ -137,7 +141,9 @@ baby_names = read_csv(file = "./data/Popular_Baby_Names.csv") %>%
   distinct()
 
 ```
+
 ##Produce two reader-friendly tables:
+
 ```{r female and male name, message = FALSE}
 baby_names %>% filter(childs_first_name == "olivia",gender == "FEMALE") %>% select(childs_first_name, year_of_birth,ethnicity, rank) %>%
   pivot_wider(names_from = "year_of_birth",
